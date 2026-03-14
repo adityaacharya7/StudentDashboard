@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { Layout, Briefcase, MessageSquare, Map, FileText, Settings, BarChart, Sun, Moon, LogOut, User as UserIcon, Sparkles, Brain, TrendingUp, BookOpen, AudioLines } from 'lucide-react';
+import { Layout, Briefcase, MessageSquare, Map, FileText, Settings, BarChart, Sun, Moon, LogOut, User as UserIcon, Sparkles, Brain, TrendingUp, BookOpen, AudioLines, Calculator, Timer, CalendarDays } from 'lucide-react';
 import { UserProfile } from './types';
 import { auth, googleProvider, getUserProfile, saveUserProfile } from './src/services/firebase';
 import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
@@ -22,6 +22,9 @@ import QuizMaker from './pages/QuizMaker';
 import PerformanceAnalyzer from './pages/PerformanceAnalyzer';
 import NotesManager from './pages/NotesManager';
 import TranscriptGenerator from './pages/TranscriptGenerator';
+import GPACalculator from './pages/GPACalculator';
+import PomodoroTimer from './pages/PomodoroTimer';
+import Timetable from './pages/Timetable';
 
 // Contexts
 const ThemeContext = createContext({ isDark: false, toggle: () => { } });
@@ -50,8 +53,8 @@ const Sidebar = () => {
   const navItems = [
     { path: '/dashboard', icon: Layout, label: 'Dashboard' },
     { path: '/internships', icon: Briefcase, label: 'Opportunities' },
-    { path: '/advisor', icon: MessageSquare, label: 'AI Advisor' },
-    { path: '/planner', icon: Settings, label: 'Prep Planner' },
+    { path: '/advisor', icon: MessageSquare, label: 'Study Buddy' },
+    { path: '/planner', icon: Settings, label: 'Exam Prep' },
     { path: '/roadmap', icon: Map, label: 'Skill Roadmap' },
 
     { path: '/resume', icon: FileText, label: 'Resume Builder' },
@@ -59,6 +62,9 @@ const Sidebar = () => {
     { path: '/performance', icon: TrendingUp, label: 'Performance' },
     { path: '/notes', icon: BookOpen, label: 'Notes' },
     { path: '/transcript', icon: AudioLines, label: 'Transcripts' },
+    { path: '/gpa', icon: Calculator, label: 'GPA Calculator' },
+    { path: '/timer', icon: Timer, label: 'Focus Timer' },
+    { path: '/timetable', icon: CalendarDays, label: 'Timetable' },
   ];
 
   if (user && isAdmin(user.email)) {
@@ -235,6 +241,9 @@ const App: React.FC = () => {
                 <Route path="/performance" element={<ProtectedRoute><PerformanceAnalyzer /></ProtectedRoute>} />
                 <Route path="/notes" element={<ProtectedRoute><NotesManager /></ProtectedRoute>} />
                 <Route path="/transcript" element={<ProtectedRoute><TranscriptGenerator /></ProtectedRoute>} />
+                <Route path="/gpa" element={<ProtectedRoute><GPACalculator /></ProtectedRoute>} />
+                <Route path="/timer" element={<ProtectedRoute><PomodoroTimer /></ProtectedRoute>} />
+                <Route path="/timetable" element={<ProtectedRoute><Timetable /></ProtectedRoute>} />
                 <Route path="/admin" element={<AdminRoute><AdminPanel /></AdminRoute>} />
               </Routes>
             </main>

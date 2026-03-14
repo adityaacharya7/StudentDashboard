@@ -77,14 +77,14 @@ const Landing: React.FC = () => {
 
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/50 dark:bg-slate-900/50 border border-brand-100 dark:border-brand-900/30 text-brand-700 dark:text-brand-400 text-[11px] font-bold uppercase tracking-widest shadow-sm backdrop-blur-sm mb-8 animate-in fade-in zoom-in duration-1000">
-            <Sparkles size={12} className="fill-brand-500/20" /> AI-Powered Career Intelligence
+            <Sparkles size={12} className="fill-brand-500/20" /> AI-Powered Smart Study Platform
           </div>
 
           {/* Headline */}
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-gray-900 dark:text-white mb-6 tracking-tight leading-[0.95] mx-auto max-w-5xl">
-            From Student to <br className="hidden md:block" />
+            Study Smarter with <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-violet-500 via-purple-500 to-cyan-400 dark:from-violet-400 dark:via-purple-400 dark:to-cyan-300 relative">
-              Specialist.
+              AI Power.
               {/* Underline decoration */}
               <svg className="absolute w-full h-3 -bottom-1 left-0 text-brand-300 dark:text-brand-700 opacity-50 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
                 <path d="M0 5 Q 50 10 100 5" stroke="currentColor" strokeWidth="4" fill="none" />
@@ -94,12 +94,12 @@ const Landing: React.FC = () => {
 
           {/* Emotional Hook */}
           <p className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6">
-            Stop wandering. Start specializing.
+            Stop cramming. Start understanding.
           </p>
 
           {/* Description */}
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Synapse cuts through the noise. We use advanced AI to generate personalized roadmaps, rewrite your resume for ATS, and uncover internships that actually match your skills.
+            Synapse uses AI to generate quizzes from your notes, summarize lectures, analyze your exam performance, and build personalized study plans — all in one place.
           </p>
 
           {/* CTAs */}
@@ -112,7 +112,7 @@ const Landing: React.FC = () => {
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
             </Link>
             <button className="px-8 py-4 bg-white dark:bg-slate-900 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-slate-800 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-slate-800 transition-all hover:border-gray-300 dark:hover:border-slate-700">
-              Explore Opportunities
+              See How It Works
             </button>
           </div>
 
@@ -128,15 +128,15 @@ const Landing: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-20 items-center">
             <div className="space-y-10">
               <h2 className="text-4xl font-black dark:text-white flex items-center gap-4">
-                The Career Gap
+                The Study Struggle
               </h2>
-              <p className="text-gray-500 text-lg">Most students feel lost in the transition between academia and industry. Synapse bridges that gap.</p>
+              <p className="text-gray-500 text-lg">Most students drown in notes, cram before exams, and never study efficiently. Synapse fixes that.</p>
               <div className="grid gap-4">
                 {[
-                  { icon: <XCircle className="text-red-500" />, text: "Skills disconnect with job markets" },
-                  { icon: <XCircle className="text-red-500" />, text: "Inaccurate, non-ATS friendly resumes" },
-                  { icon: <XCircle className="text-red-500" />, text: "Unverified and outdated internships" },
-                  { icon: <XCircle className="text-red-500" />, text: "No personalized roadmap or planning" }
+                  { icon: <XCircle className="text-red-500" />, text: "Piles of unorganized lecture notes" },
+                  { icon: <XCircle className="text-red-500" />, text: "No idea what's important for exams" },
+                  { icon: <XCircle className="text-red-500" />, text: "Can't track academic performance over time" },
+                  { icon: <XCircle className="text-red-500" />, text: "No personalized study plan or schedule" }
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4 p-5 bg-gray-50 dark:bg-slate-900 rounded-2xl text-gray-600 dark:text-gray-400 font-bold border dark:border-slate-800">
                     {item.icon} {item.text}
@@ -152,16 +152,16 @@ const Landing: React.FC = () => {
                 </h3>
                 <div className="space-y-6">
                   <div className="p-4 bg-brand-50 dark:bg-brand-900/20 rounded-xl border border-brand-100 dark:border-brand-900/30">
-                    <p className="text-sm font-black text-brand-700 dark:text-brand-400 mb-1">AI ROADMAPS</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Step-by-step paths generated for your target role.</p>
+                    <p className="text-sm font-black text-brand-700 dark:text-brand-400 mb-1">AI QUIZ MAKER</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Generate quizzes from any topic or your own notes instantly.</p>
                   </div>
                   <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-100 dark:border-green-900/30">
-                    <p className="text-sm font-black text-green-700 dark:text-green-400 mb-1">RESUME OPTIMIZER</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Increase ATS score with professional bullet rewrites.</p>
+                    <p className="text-sm font-black text-green-700 dark:text-green-400 mb-1">NOTES SUMMARIZER</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Get key points, important terms, and likely exam questions from your notes.</p>
                   </div>
                   <div className="p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl border border-purple-100 dark:border-purple-900/30">
-                    <p className="text-sm font-black text-purple-700 dark:text-purple-400 mb-1">PREP PLANNER</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">Dynamic study schedules for your upcoming interviews.</p>
+                    <p className="text-sm font-black text-purple-700 dark:text-purple-400 mb-1">EXAM PREP PLANNER</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">AI-generated study schedules tailored to your upcoming exams.</p>
                   </div>
                 </div>
               </div>
@@ -176,7 +176,7 @@ const Landing: React.FC = () => {
           <div className="flex justify-center mb-8">
             <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white font-bold">SY</div>
           </div>
-          <p className="text-gray-500 dark:text-gray-400 font-medium">© 2026 Synapse. Forging the next generation of industry leaders.</p>
+          <p className="text-gray-500 dark:text-gray-400 font-medium">&copy; 2026 Synapse. Empowering students to study smarter, not harder.</p>
         </div>
       </footer>
     </div>

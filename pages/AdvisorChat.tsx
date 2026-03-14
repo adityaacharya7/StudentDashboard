@@ -10,7 +10,7 @@ const AdvisorChat: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
     const saved = localStorage.getItem('chat_history');
     return saved ? JSON.parse(saved) : [
-      { role: 'assistant', content: `Hi ${user?.name.split(' ')[0]}! I've analyzed your profile. As an aspiring ${user?.targetRole || 'Specialist'}, I can help you with your roadmap, mock interview prep, or finding the right internships. What's on your mind?` }
+      { role: 'assistant', content: `Hi ${user?.name.split(' ')[0]}! I'm your Study Buddy. I can help with homework, explain concepts, suggest study strategies, or prep you for exams. What do you need help with?` }
     ];
   });
   const [input, setInput] = useState('');
@@ -55,10 +55,10 @@ const AdvisorChat: React.FC = () => {
             <Bot size={28} />
           </div>
           <div>
-            <h1 className="font-bold text-xl dark:text-white">Synapse Advisor</h1>
+            <h1 className="font-bold text-xl dark:text-white">Study Buddy</h1>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-              <span className="text-xs text-green-500 font-bold uppercase tracking-widest">Optimizing your path</span>
+              <span className="text-xs text-green-500 font-bold uppercase tracking-widest">Ready to help you learn</span>
             </div>
           </div>
         </div>
@@ -93,7 +93,7 @@ const AdvisorChat: React.FC = () => {
                 <Loader2 size={20} className="animate-spin" />
               </div>
               <div className="p-6 rounded-3xl bg-gray-50 dark:bg-slate-900 text-gray-400 text-sm italic border dark:border-slate-800">
-                Analyzing your career goals...
+                Thinking about your question...
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@ const AdvisorChat: React.FC = () => {
           <input
             type="text"
             className="flex-1 p-5 border dark:border-slate-700 rounded-2xl focus:ring-4 focus:ring-brand-500/10 outline-none bg-white dark:bg-slate-800 dark:text-white shadow-sm transition-all text-lg"
-            placeholder={`Ask about ${user?.targetRole || 'your career'}...`}
+            placeholder={`Ask about any subject, concept, or study strategy...`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}

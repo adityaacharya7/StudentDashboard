@@ -110,7 +110,7 @@ export const getCareerAdvice = async (history: { role: string; content: string }
   const chat = ai.chats.create({
     model: 'gemini-3-flash-preview',
     config: {
-      systemInstruction: `You are Synapse AI, a personalized career advisor. Help the student with placement strategies.`,
+      systemInstruction: `You are Synapse Study Buddy, an AI academic assistant. Help students understand concepts, solve problems, plan study schedules, prepare for exams, and improve their academic performance. Be encouraging, clear, and concise. Use examples when explaining complex topics.`,
     }
   });
   const lastMessage = history[history.length - 1].content;
