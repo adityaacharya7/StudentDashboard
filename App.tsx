@@ -74,10 +74,10 @@ const Sidebar = () => {
   if (location.pathname === '/' || location.pathname === '/login' || location.pathname === '/profile-setup') return null;
 
   return (
-    <div className="w-72 bg-white dark:bg-slate-900 border-r dark:border-slate-800 h-screen sticky top-0 flex flex-col transition-all duration-300">
+    <div className="w-80 bg-white dark:bg-slate-900 border-r dark:border-slate-800 h-screen sticky top-0 flex flex-col transition-all duration-300">
       <div className="p-8 border-b dark:border-slate-800">
-        <Link to="/dashboard" className="text-2xl font-black text-brand-600 dark:text-brand-400 flex items-center gap-3 tracking-tighter">
-          <img src="/logo.png" alt="Synapse Logo" className="w-8 h-8 object-contain" />
+        <Link to="/dashboard" className="text-2xl font-black text-brand-600 dark:text-brand-400 flex items-center gap-3 tracking-tighter group">
+          <img src="/logo.png" alt="Synapse Logo" className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-md" />
           Synapse
         </Link>
       </div>

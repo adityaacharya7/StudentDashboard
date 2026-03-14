@@ -239,7 +239,12 @@ const StudentDashboard: React.FC = () => {
             </div>
           )}
           {exams.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-3">No exams added yet. Click + to add one.</p>
+            <div className="text-center py-6 bg-gray-50/50 dark:bg-slate-900/50 rounded-2xl border border-dashed border-gray-200 dark:border-slate-700">
+              <CalendarDays className="w-8 h-8 text-gray-300 dark:text-gray-600 mx-auto mb-2" />
+              <p className="text-sm font-bold text-gray-500 dark:text-gray-400 mb-1">No exams tracked yet</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500 mb-4 px-4">Add your upcoming midterms and finals to get a personalized study plan.</p>
+              <button onClick={() => setShowAddExam(true)} className="text-xs font-bold text-brand-600 bg-brand-50 dark:bg-brand-900/20 px-3 py-1.5 rounded-lg hover:bg-brand-100 dark:hover:bg-brand-900/40 transition-colors inline-flex items-center gap-1">+ Add First Exam</button>
+            </div>
           ) : (
             <div className="space-y-2 max-h-28 overflow-y-auto">
               {exams.map(ex => {
@@ -266,14 +271,14 @@ const StudentDashboard: React.FC = () => {
 
           {/* Study Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <StatCard label="Quizzes Taken" value={quizzes.length} icon={<Brain size={18} />} color="text-purple-500" bg="bg-purple-50 dark:bg-purple-900/20" loading={loading} />
-            <StatCard label="Avg Quiz Score" value={avgQuizScore !== null ? `${avgQuizScore}%` : '—'} icon={<Trophy size={18} />} color="text-yellow-500" bg="bg-yellow-50 dark:bg-yellow-900/20" loading={loading} />
-            <StatCard label="Notes Saved" value={notes.length} icon={<BookOpen size={18} />} color="text-blue-500" bg="bg-blue-50 dark:bg-blue-900/20" loading={loading} />
-            <StatCard label="Transcripts" value={transcripts.length} icon={<AudioLines size={18} />} color="text-orange-500" bg="bg-orange-50 dark:bg-orange-900/20" loading={loading} />
+            <StatCard label="Quizzes Taken" value={quizzes.length} icon={<Brain size={18} />} color="text-purple-500" bg="bg-purple-50 dark:bg-purple-900/20" loading={loading} progress={Math.min(quizzes.length * 10, 100)} />
+            <StatCard label="Avg Quiz Score" value={avgQuizScore !== null ? `${avgQuizScore}%` : '—'} icon={<Trophy size={18} />} color="text-yellow-500" bg="bg-yellow-50 dark:bg-yellow-900/20" loading={loading} progress={avgQuizScore !== null ? avgQuizScore : 0} />
+            <StatCard label="Notes Saved" value={notes.length} icon={<BookOpen size={18} />} color="text-blue-500" bg="bg-blue-50 dark:bg-blue-900/20" loading={loading} progress={Math.min(notes.length * 5, 100)} />
+            <StatCard label="Transcripts" value={transcripts.length} icon={<AudioLines size={18} />} color="text-orange-500" bg="bg-orange-50 dark:bg-orange-900/20" loading={loading} progress={Math.min(transcripts.length * 5, 100)} />
           </div>
 
           {/* Recent Activity */}
-          <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-8 shadow-sm">
+          <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300">
             <h3 className="text-xl font-black text-gray-900 dark:text-white mb-6 flex items-center gap-2">
               <Clock size={20} className="text-brand-600" /> Recent Activity
             </h3>
@@ -312,7 +317,7 @@ const StudentDashboard: React.FC = () => {
 
           {/* Latest Performance */}
           {latestReport && (
-            <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-8 shadow-sm animate-in fade-in duration-500">
+            <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:shadow-green-500/5 transition-all duration-300 animate-in fade-in duration-500">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
                   <TrendingUp size={20} className="text-green-500" /> Latest Performance
@@ -348,7 +353,7 @@ const StudentDashboard: React.FC = () => {
         <div className="lg:col-span-4 space-y-8">
 
           {/* AI Study Tip */}
-          <div className="bg-brand-50 dark:bg-brand-950/30 border border-brand-100 dark:border-brand-900/50 p-6 rounded-3xl relative overflow-hidden group">
+          <div className="bg-brand-50 dark:bg-brand-950/30 border border-brand-100 dark:border-brand-900/50 p-6 rounded-3xl relative overflow-hidden group hover:shadow-xl hover:shadow-brand-500/10 transition-all duration-300">
             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
               <Sparkles size={100} />
             </div>
@@ -371,7 +376,7 @@ const StudentDashboard: React.FC = () => {
           </div>
 
           {/* Tools & Utilities */}
-          <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
+          <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300">
             <h3 className="text-lg font-black text-gray-900 dark:text-white mb-4">Quick Tools</h3>
             <div className="space-y-2">
               <QuickToolLink label="Resume Builder" desc="ATS check & optimization" icon={<FileText size={16} />} path="/resume" />
@@ -381,7 +386,7 @@ const StudentDashboard: React.FC = () => {
           </div>
 
           {/* Profile Snapshot */}
-          <div className="bg-gradient-to-br from-gray-900 to-slate-800 dark:from-slate-900 dark:to-slate-950 rounded-3xl p-6 text-white shadow-xl">
+          <div className="bg-gradient-to-br from-gray-900 to-slate-800 dark:from-slate-900 dark:to-slate-950 rounded-3xl p-6 text-white shadow-xl hover:scale-[1.02] transition-transform duration-300">
             <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Your Profile</p>
             <h3 className="text-xl font-black mb-1">{user?.name || 'Student'}</h3>
             <p className="text-gray-400 text-sm font-medium mb-4">
@@ -411,15 +416,21 @@ const StudentDashboard: React.FC = () => {
 
 // ── Sub Components ──
 
-const StatCard = ({ label, value, icon, color, bg, loading }: { label: string; value: string | number; icon: React.ReactNode; color: string; bg: string; loading: boolean }) => (
-  <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-5 shadow-sm">
-    <div className={`w-10 h-10 ${bg} ${color} rounded-xl flex items-center justify-center mb-3`}>
+const StatCard = ({ label, value, icon, color, bg, loading, progress }: { label: string; value: string | number; icon: React.ReactNode; color: string; bg: string; loading: boolean, progress: number }) => (
+  <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-5 shadow-sm hover:scale-[1.03] hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300 relative overflow-hidden group">
+    <div className={`w-10 h-10 ${bg} ${color} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
       {icon}
     </div>
     <p className="text-2xl font-black text-gray-900 dark:text-white">
       {loading ? <span className="inline-block w-8 h-6 bg-gray-100 dark:bg-slate-800 rounded animate-pulse"></span> : value}
     </p>
-    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1">{label}</p>
+    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1 mb-3">{label}</p>
+    {/* Micro Visualization */}
+    {!loading && (
+      <div className="w-full h-1 bg-gray-100 dark:bg-slate-800 rounded-full overflow-hidden">
+        <div className={`h-full ${bg.replace('20', '50').replace('50', '400').split(' ')[0]} ${color.replace('text', 'bg')} transition-all duration-1000 ease-out`} style={{ width: `${progress}%` }} />
+      </div>
+    )}
   </div>
 );
 
