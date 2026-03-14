@@ -205,7 +205,7 @@ const StudentDashboard: React.FC = () => {
       {/* Streak + Exams row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Study Streak */}
-        <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
+        <TiltCard className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-black text-gray-900 dark:text-white flex items-center gap-2"><Flame size={18} className="text-orange-500" /> Study Streak</h3>
             <span className="text-2xl font-black text-orange-500">{studyStreak} 🔥</span>
@@ -223,10 +223,10 @@ const StudentDashboard: React.FC = () => {
             ))}
           </div>
           <p className="text-xs text-gray-400 mt-3">Use any Synapse tool to keep your streak alive!</p>
-        </div>
+        </TiltCard>
 
         {/* Upcoming Exams */}
-        <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
+        <TiltCard className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-black text-gray-900 dark:text-white flex items-center gap-2"><CalendarDays size={18} className="text-red-500" /> Upcoming Exams</h3>
             <button onClick={() => setShowAddExam(!showAddExam)} className="p-1.5 bg-gray-100 dark:bg-slate-800 rounded-lg text-gray-400 hover:text-brand-600 transition-colors"><Plus size={14} /></button>
@@ -262,7 +262,7 @@ const StudentDashboard: React.FC = () => {
               })}
             </div>
           )}
-        </div>
+        </TiltCard>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -317,7 +317,7 @@ const StudentDashboard: React.FC = () => {
 
           {/* Latest Performance */}
           {latestReport && (
-            <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:shadow-green-500/5 transition-all duration-300 animate-in fade-in duration-500">
+            <TiltCard className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-8 shadow-sm hover:shadow-xl hover:shadow-green-500/5 transition-all duration-300 animate-in fade-in duration-500">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-black text-gray-900 dark:text-white flex items-center gap-2">
                   <TrendingUp size={20} className="text-green-500" /> Latest Performance
@@ -345,7 +345,7 @@ const StudentDashboard: React.FC = () => {
                   <p className="text-sm font-bold text-red-800 dark:text-red-300">{latestReport.weaknesses[0] || '—'}</p>
                 </div>
               </div>
-            </div>
+            </TiltCard>
           )}
         </div>
 
@@ -353,7 +353,7 @@ const StudentDashboard: React.FC = () => {
         <div className="lg:col-span-4 space-y-8">
 
           {/* AI Study Tip */}
-          <div className="bg-brand-50 dark:bg-brand-950/30 border border-brand-100 dark:border-brand-900/50 p-6 rounded-3xl relative overflow-hidden group hover:shadow-xl hover:shadow-brand-500/10 transition-all duration-300">
+          <TiltCard className="bg-brand-50 dark:bg-brand-950/30 border border-brand-100 dark:border-brand-900/50 p-6 rounded-3xl relative overflow-hidden group hover:shadow-xl hover:shadow-brand-500/10 transition-all duration-300">
             <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
               <Sparkles size={100} />
             </div>
@@ -373,20 +373,20 @@ const StudentDashboard: React.FC = () => {
                 </Link>
               </div>
             </div>
-          </div>
+          </TiltCard>
 
           {/* Tools & Utilities */}
-          <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300">
+          <TiltCard className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300">
             <h3 className="text-lg font-black text-gray-900 dark:text-white mb-4">Quick Tools</h3>
             <div className="space-y-2">
               <QuickToolLink label="Resume Builder" desc="ATS check & optimization" icon={<FileText size={16} />} path="/resume" />
               <QuickToolLink label="Skill Roadmap" desc="Personalized learning path" icon={<Target size={16} />} path="/roadmap" />
               <QuickToolLink label="AI Advisor" desc="Ask anything academic" icon={<Sparkles size={16} />} path="/advisor" />
             </div>
-          </div>
+          </TiltCard>
 
           {/* Profile Snapshot */}
-          <div className="bg-gradient-to-br from-gray-900 to-slate-800 dark:from-slate-900 dark:to-slate-950 rounded-3xl p-6 text-white shadow-xl hover:scale-[1.02] transition-transform duration-300">
+          <TiltCard className="bg-gradient-to-br from-gray-900 to-slate-800 dark:from-slate-900 dark:to-slate-950 rounded-3xl p-6 text-white shadow-xl transition-transform duration-300">
             <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Your Profile</p>
             <h3 className="text-xl font-black mb-1">{user?.name || 'Student'}</h3>
             <p className="text-gray-400 text-sm font-medium mb-4">
@@ -407,7 +407,7 @@ const StudentDashboard: React.FC = () => {
             <div className="flex items-center gap-2 text-xs text-gray-400">
               <span className="px-2 py-1 bg-brand-500/20 text-brand-300 rounded-md font-bold">{user?.currentLevel}</span>
             </div>
-          </div>
+          </TiltCard>
         </div>
       </div>
     </div>
@@ -417,7 +417,7 @@ const StudentDashboard: React.FC = () => {
 // ── Sub Components ──
 
 const StatCard = ({ label, value, icon, color, bg, loading, progress }: { label: string; value: string | number; icon: React.ReactNode; color: string; bg: string; loading: boolean, progress: number }) => (
-  <div className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-5 shadow-sm hover:scale-[1.03] hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300 relative overflow-hidden group">
+  <TiltCard className="bg-white dark:bg-slate-950 border border-gray-100 dark:border-slate-800 rounded-3xl p-5 shadow-sm hover:shadow-xl hover:shadow-brand-500/5 transition-all duration-300 relative overflow-hidden group">
     <div className={`w-10 h-10 ${bg} ${color} rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform`}>
       {icon}
     </div>
@@ -431,7 +431,7 @@ const StatCard = ({ label, value, icon, color, bg, loading, progress }: { label:
         <div className={`h-full ${bg.replace('20', '50').replace('50', '400').split(' ')[0]} ${color.replace('text', 'bg')} transition-all duration-1000 ease-out`} style={{ width: `${progress}%` }} />
       </div>
     )}
-  </div>
+  </TiltCard>
 );
 
 const QuickToolLink = ({ label, desc, icon, path }: { label: string; desc: string; icon: React.ReactNode; path: string }) => (
@@ -456,6 +456,46 @@ const formatTimeAgo = (dateStr: string) => {
   if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
   if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
   return d.toLocaleDateString();
+};
+
+const TiltCard = ({ children, className }: { children: React.ReactNode, className?: string }) => {
+  const [style, setStyle] = useState({});
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -5; // Adjust multiplier for tilt intensity
+    const rotateY = ((x - centerX) / centerX) * 5;
+
+    setStyle({
+      transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`,
+      transition: 'none',
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setStyle({
+      transform: 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+      transition: 'all 0.5s ease',
+    });
+  };
+
+  return (
+    <div
+      className={className}
+      style={{ ...style, willChange: 'transform' }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {children}
+    </div>
+  );
 };
 
 export default StudentDashboard;
