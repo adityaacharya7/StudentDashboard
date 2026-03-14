@@ -118,29 +118,35 @@ export const getCareerAdvice = async (history: { role: string; content: string }
   return result.text;
 };
 
-export const generatePrepPlan = async (targetRole: string, days: number, currentLevel: string): Promise<any> => {
+export const generatePrepPlan = async (examSubject: string, days: number, currentLevel: string): Promise<any> => {
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
-    contents: `Generate a gamified placement quest for a student targeting ${targetRole} in ${days} days at ${currentLevel} level.
+    contents: `Generate a gamified exam preparation quest for a student preparing for exams in the subject/field: "${examSubject}" over ${days} days at ${currentLevel} proficiency level.
+    
+    The quest should be focused on:
+    - Mastering key concepts and topics in ${examSubject}
+    - Building study habits and revision strategies
+    - Practicing past paper questions and problem-solving
+    - Time management and exam technique
     
     OUTPUT JSON ONLY:
     {
-      "questName": "The ${targetRole} Protocol",
-      "mainObjective": "Brief objective string",
+      "questName": "The ${examSubject} Conquest",
+      "mainObjective": "Brief exam mastery objective string",
       "dailyQuests": [
-        { "id": "d1", "title": "Task 1", "xp": 20, "bonus": "optional bonus" },
-        { "id": "d2", "title": "Task 2", "xp": 40, "bonus": null }
+        { "id": "d1", "title": "Study/Revision Task 1", "xp": 20, "bonus": "optional bonus tip" },
+        { "id": "d2", "title": "Practice Problem Task 2", "xp": 40, "bonus": null }
       ],
       "bossBattle": {
-        "name": "Week 1 Boss: [Topic]",
+        "name": "Week 1 Challenge: [Topic/Chapter]",
         "requirements": [
-          { "label": "Requirement 1", "progress": "0/10" },
-          { "label": "Requirement 2", "progress": "0/5" }
+          { "label": "Revision Milestone 1", "progress": "0/10" },
+          { "label": "Practice Problems Solved", "progress": "0/5" }
         ],
-        "rewards": ["Reward 1", "Reward 2"]
+        "rewards": ["Mastery Badge", "Topic Completion"]
       },
       "debuffs": [
-        { "title": "Risk 1", "desc": "Effect", "fix": "Mitigation" }
+        { "title": "Risk 1", "desc": "Study Risk Effect", "fix": "Mitigation Strategy" }
       ]
     }`,
     config: {
@@ -158,7 +164,7 @@ export const generatePrepPlan = async (targetRole: string, days: number, current
                 id: { type: Type.STRING },
                 title: { type: Type.STRING },
                 xp: { type: Type.NUMBER },
-                bonus: { type: Type.STRING } // nullable treated as string/null by API usually, but Type.STRING is safest
+                bonus: { type: Type.STRING }
               },
               required: ["id", "title", "xp"]
             }
@@ -191,16 +197,21 @@ export const generatePrepPlan = async (targetRole: string, days: number, current
   return JSON.parse(response.text || '{}');
 };
 
-export const generateDailyQuests = async (targetRole: string, dayNumber: number, currentLevel: string): Promise<any[]> => {
+export const generateDailyQuests = async (examSubject: string, dayNumber: number, currentLevel: string): Promise<any[]> => {
   const response = await ai.models.generateContent({
     model: "gemini-3-flash-preview",
-    contents: `Generate 3 fresh, specific daily quests for Day ${dayNumber} of a ${targetRole} placement prep campaign (Level: ${currentLevel}).
+    contents: `Generate 3 fresh, specific daily study quests for Day ${dayNumber} of an exam preparation campaign for the subject/field: "${examSubject}" (Proficiency: ${currentLevel}).
+    
+    Focus on:
+    - Concept revision and note-taking
+    - Practice problems, past paper questions, or flashcard drills
+    - Active recall and spaced repetition techniques
     
     OUTPUT JSON ARRAY ONLY:
     [
-      { "id": "d_${dayNumber}_1", "title": "Task 1", "xp": 30, "bonus": "optional bonus" },
-      { "id": "d_${dayNumber}_2", "title": "Task 2", "xp": 50, "bonus": null },
-      { "id": "d_${dayNumber}_3", "title": "Task 3", "xp": 20, "bonus": null }
+      { "id": "d_${dayNumber}_1", "title": "Study Task 1", "xp": 30, "bonus": "optional study tip" },
+      { "id": "d_${dayNumber}_2", "title": "Practice Task 2", "xp": 50, "bonus": null },
+      { "id": "d_${dayNumber}_3", "title": "Revision Task 3", "xp": 20, "bonus": null }
     ]`,
     config: {
       responseMimeType: "application/json",

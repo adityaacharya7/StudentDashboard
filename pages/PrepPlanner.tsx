@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, Loader2, Shield, Lock, CheckCircle2, Sword, Skull, Flame, AlertTriangle, ArrowRight, Save } from 'lucide-react';
+import { Target, Loader2, Shield, Lock, CheckCircle2, BookOpen, Skull, Flame, AlertTriangle, ArrowRight, Save } from 'lucide-react';
 import { generatePrepPlan, generateDailyQuests } from '../src/services/geminiService';
 import { getUserProfile, updateUserQuestProgress, auth } from '../src/services/firebase';
 import { useUser } from '../App';
@@ -15,6 +15,7 @@ const PrepPlanner: React.FC = () => {
   // Inputs
   const [days, setDays] = useState(30);
   const [level, setLevel] = useState('Intermediate');
+  const [examSubject, setExamSubject] = useState(user?.targetRole || '');
 
   // Gamification State
   const [xp, setXp] = useState(0);
@@ -89,6 +90,7 @@ const PrepPlanner: React.FC = () => {
           setCompletedDailies(currentCompleted);
           setDays(qp.days);
           setLevel(qp.level);
+          setExamSubject(qp.role || '');
           setQuestMeta({
             startDate: qp.startDate,
             lastDailyRefresh: qp.lastDailyRefresh
@@ -110,7 +112,7 @@ const PrepPlanner: React.FC = () => {
 
     const currentProgress: QuestProgress = {
       active: true,
-      role: user?.targetRole || 'Unknown',
+      role: examSubject || user?.targetRole || 'General',
       days,
       startDate: questMeta.startDate,
       lastDailyRefresh: questMeta.lastDailyRefresh,
@@ -133,17 +135,17 @@ const PrepPlanner: React.FC = () => {
   };
 
   const mainQuestStages = [
-    { id: 1, name: 'Core Foundations', status: 'active' },
-    { id: 2, name: 'Advanced Concepts', status: 'locked' },
-    { id: 3, name: 'System Design', status: 'locked' },
-    { id: 4, name: 'Mock Interviews', status: 'locked' },
+    { id: 1, name: 'Concept Foundations', status: 'active' },
+    { id: 2, name: 'Deep Revision', status: 'locked' },
+    { id: 3, name: 'Practice & Past Papers', status: 'locked' },
+    { id: 4, name: 'Mock Exams', status: 'locked' },
   ];
 
   const handleGenerateQuest = async () => {
-    if (!user?.targetRole) return;
+    if (!examSubject.trim()) return;
     setLoading(true);
     try {
-      const data = await generatePrepPlan(user.targetRole, days, level);
+      const data = await generatePrepPlan(examSubject, days, level);
       setQuestData(data);
       setSetupMode(false);
 
@@ -159,7 +161,7 @@ const PrepPlanner: React.FC = () => {
       if (userId) {
         const initialProgress: QuestProgress = {
           active: true,
-          role: user.targetRole,
+          role: examSubject,
           days,
           startDate,
           lastDailyRefresh: startDate, // Set initial refresh to now
@@ -177,10 +179,10 @@ const PrepPlanner: React.FC = () => {
       console.error("Failed to generate quest", error);
       // Fallback logic kept simple for brevity, same as before
       const fallbackData = {
-        questName: `The ${user.targetRole} Protocol`,
-        mainObjective: "Master the Interview Gauntlet",
-        dailyQuests: [{ id: 'd1', title: 'Emergency Fallback Task', xp: 10, bonus: null }],
-        bossBattle: { name: "System Offline Boss", requirements: [], rewards: [] },
+        questName: `The ${examSubject} Conquest`,
+        mainObjective: "Master the Exam",
+        dailyQuests: [{ id: 'd1', title: 'Emergency Fallback Study Task', xp: 10, bonus: null }],
+        bossBattle: { name: "System Offline Challenge", requirements: [], rewards: [] },
         debuffs: []
       };
       setQuestData(fallbackData);
@@ -228,19 +230,22 @@ const PrepPlanner: React.FC = () => {
         <div className="w-full max-w-2xl bg-white dark:bg-slate-950 rounded-[2.5rem] p-10 shadow-2xl border dark:border-slate-800 animate-in zoom-in-95 duration-500">
           <div className="text-center mb-10">
             <div className="w-16 h-16 bg-brand-600 rounded-2xl mx-auto flex items-center justify-center text-white mb-6 shadow-lg shadow-brand-500/30">
-              <Sword size={32} />
+              <BookOpen size={32} />
             </div>
-            <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight mb-3">Choose Your Quest</h1>
-            <p className="text-gray-500 text-lg">Define your target to generate a personalized campaign.</p>
+            <h1 className="text-4xl font-black text-gray-900 dark:text-white tracking-tight mb-3">Exam Prep Quest</h1>
+            <p className="text-gray-500 text-lg">Define your subject & timeline to generate a personalized study campaign.</p>
           </div>
 
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-bold text-gray-900 dark:text-white mb-2 ml-1">Assigned Class</label>
-              <div className="p-4 rounded-xl border-2 border-brand-600 bg-brand-50 dark:bg-brand-900/20 text-brand-700 dark:text-brand-400 font-bold flex justify-between items-center opacity-80 cursor-not-allowed">
-                <span>{user?.targetRole || 'Explorer (No Role Set)'}</span>
-                <Lock size={16} />
-              </div>
+              <label className="block text-sm font-bold text-gray-900 dark:text-white mb-2 ml-1">Exam Subject / Field</label>
+              <input
+                type="text"
+                value={examSubject}
+                onChange={(e) => setExamSubject(e.target.value)}
+                placeholder="e.g. Data Structures, Organic Chemistry, Calculus..."
+                className="w-full p-4 rounded-xl bg-gray-50 dark:bg-slate-900 border-2 border-transparent focus:border-brand-500 outline-none font-bold text-gray-900 dark:text-white placeholder:text-gray-400 placeholder:font-normal"
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-6">
@@ -273,16 +278,16 @@ const PrepPlanner: React.FC = () => {
 
             <button
               onClick={handleGenerateQuest}
-              disabled={loading || !user?.targetRole}
+              disabled={loading || !examSubject.trim()}
               className="w-full py-5 bg-brand-600 text-white rounded-2xl font-bold text-xl hover:bg-brand-700 transition-all shadow-xl shadow-brand-500/30 flex items-center justify-center gap-3 mt-4 disabled:opacity-70 disabled:cursor-not-allowed group"
             >
               {loading ? (
                 <>
-                  <Loader2 className="animate-spin" /> Generating World...
+                  <Loader2 className="animate-spin" /> Generating Study Plan...
                 </>
               ) : (
                 <>
-                  Start Quest <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                  Begin Study Quest <ArrowRight className="group-hover:translate-x-1 transition-transform" />
                 </>
               )}
             </button>
@@ -306,7 +311,7 @@ const PrepPlanner: React.FC = () => {
             </div>
             <div className="flex items-center gap-3">
               <div>
-                <h1 className="text-4xl font-black tracking-tight mb-2">{questData?.questName || 'Placement Quest'}</h1>
+                <h1 className="text-4xl font-black tracking-tight mb-2">{questData?.questName || 'Exam Quest'}</h1>
                 <p className="text-gray-500 dark:text-gray-400 font-medium text-lg">{days}-Day Campaign • {level} Mode</p>
               </div>
             </div>
@@ -336,7 +341,7 @@ const PrepPlanner: React.FC = () => {
         </div>
         <div className="relative z-10">
           <h2 className="text-2xl font-black mb-8 flex items-center gap-3">
-            <Shield className="text-brand-400" /> Main Objective: {questData?.mainObjective || 'Career Mastery'}
+            <Shield className="text-brand-400" /> Main Objective: {questData?.mainObjective || 'Exam Mastery'}
           </h2>
 
           {/* Stages Stepper */}
@@ -403,7 +408,7 @@ const PrepPlanner: React.FC = () => {
                 <Skull size={100} />
               </div>
               <h3 className="text-xl font-black text-red-700 dark:text-red-400 mb-6 flex items-center gap-2">
-                <Sword className="text-red-600" /> {questData.bossBattle.name}
+                <BookOpen className="text-red-600" /> {questData.bossBattle.name}
               </h3>
               <div className="bg-white dark:bg-slate-950/50 rounded-2xl p-6 border border-red-100 dark:border-red-900/30 backdrop-blur-sm">
                 <div className="space-y-3">
