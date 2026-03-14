@@ -574,3 +574,52 @@ export const generateTranscript = async (
   });
   return JSON.parse(response.text || '{}');
 };
+
+// ── Image Parsers ──
+export const parseTimetableImage = async (fileData: { data: string; mimeType: string }) => {
+  const systemPrompt = `You are a highly capable AI assistant that excels at parsing structured data from images. 
+Your task is to analyze the provided image of a class timetable or schedule and extract all class entries.
+
+Organize the extracted data into a JSON object matching this TypeScript type:
+type DaySchedule = {
+  id: string; // generate a unique ID, e.g., cls_1234
+  subject: string; // The name of the class or subject
+  time: string; // Start time in 24-hour HH:mm format
+  endTime: string; // End time in 24-hour HH:mm format
+  location: string; // Room number or location
+  color: string; // Leave empty, to be assigned by the app
+}[];
+Record<string, DaySchedule> // where keys are 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
+
+Make your best guess for missing information based on the context, but don't invent things.
+Ensure the times are strictly formatted as HH:mm (e.g., "09:00", "14:30").`;
+
+  const requestContents = {
+    parts: [
+      { inlineData: { mimeType: fileData.mimeType, data: fileData.data } },
+      { text: systemPrompt }
+    ]
+  };
+
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: requestContents,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          Monday: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { id: { type: Type.STRING }, subject: { type: Type.STRING }, time: { type: Type.STRING }, endTime: { type: Type.STRING }, location: { type: Type.STRING }, color: { type: Type.STRING } } } },
+          Tuesday: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { id: { type: Type.STRING }, subject: { type: Type.STRING }, time: { type: Type.STRING }, endTime: { type: Type.STRING }, location: { type: Type.STRING }, color: { type: Type.STRING } } } },
+          Wednesday: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { id: { type: Type.STRING }, subject: { type: Type.STRING }, time: { type: Type.STRING }, endTime: { type: Type.STRING }, location: { type: Type.STRING }, color: { type: Type.STRING } } } },
+          Thursday: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { id: { type: Type.STRING }, subject: { type: Type.STRING }, time: { type: Type.STRING }, endTime: { type: Type.STRING }, location: { type: Type.STRING }, color: { type: Type.STRING } } } },
+          Friday: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { id: { type: Type.STRING }, subject: { type: Type.STRING }, time: { type: Type.STRING }, endTime: { type: Type.STRING }, location: { type: Type.STRING }, color: { type: Type.STRING } } } },
+          Saturday: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { id: { type: Type.STRING }, subject: { type: Type.STRING }, time: { type: Type.STRING }, endTime: { type: Type.STRING }, location: { type: Type.STRING }, color: { type: Type.STRING } } } },
+          Sunday: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { id: { type: Type.STRING }, subject: { type: Type.STRING }, time: { type: Type.STRING }, endTime: { type: Type.STRING }, location: { type: Type.STRING }, color: { type: Type.STRING } } } },
+        }
+      }
+    }
+  });
+
+  return JSON.parse(response.text || '{}');
+};

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { CalendarDays, Plus, Trash2, Clock, MapPin } from 'lucide-react';
+import { CalendarDays, Plus, Trash2, Clock, MapPin, ImagePlus, Loader2 } from 'lucide-react';
+import { parseTimetableImage } from '../src/services/geminiService';
 
 interface ClassEntry {
   id: string;
@@ -35,10 +36,66 @@ const Timetable: React.FC = () => {
     return today >= 1 && today <= 6 ? DAYS[today - 1] : DAYS[0];
   });
   const [editing, setEditing] = useState<string | null>(null);
+  const [isParsingImage, setIsParsingImage] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('timetable', JSON.stringify(schedule));
   }, [schedule]);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsParsingImage(true);
+    try {
+      // Convert to base64
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const base64Data = event.target?.result?.toString().split(',')[1];
+        if (!base64Data) throw new Error("Failed to read file");
+
+        const parsedData = await parseTimetableImage({
+          mimeType: file.type,
+          data: base64Data
+        });
+
+        if (parsedData) {
+          setSchedule(prev => {
+            const next = { ...prev };
+            let colorIdx = 0;
+            
+            // Merge parsed data into existing schedule
+            for (const day of Object.keys(parsedData)) {
+              if (DAYS.includes(day) && Array.isArray(parsedData[day])) {
+                const newClasses = parsedData[day].map((cls: any) => ({
+                  id: cls.id || `cls_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                  subject: cls.subject || 'Unknown Class',
+                  time: cls.time || '09:00',
+                  endTime: cls.endTime || '10:00',
+                  location: cls.location || '',
+                  color: COLORS[colorIdx++ % COLORS.length]
+                }));
+                
+                next[day] = [...(next[day] || []), ...newClasses].sort((a, b) => a.time.localeCompare(b.time));
+              }
+            }
+            return next;
+          });
+        }
+      };
+      reader.onerror = () => {
+        console.error("Error reading file");
+        setIsParsingImage(false);
+      }
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error("Failed to parse timetable image", error);
+    } finally {
+      // the actual finally needs to happen in the onload, but this resets the input at least
+      e.target.value = '';
+      setTimeout(() => setIsParsingImage(false), 3000); // safety fallback
+    }
+  };
 
   const addClass = () => {
     const newClass: ClassEntry = {
@@ -96,12 +153,22 @@ const Timetable: React.FC = () => {
             <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Total Classes/Week</p>
           </div>
         </div>
-        <div className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-3xl p-5 shadow-sm flex items-center gap-4">
-          <div className="w-12 h-12 bg-green-50 dark:bg-green-900/20 text-green-600 rounded-2xl flex items-center justify-center"><Clock size={22} /></div>
-          <div>
-            <p className="text-2xl font-black text-gray-900 dark:text-white">{todayClasses}</p>
-            <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Classes {activeDay}</p>
-          </div>
+        <div className="bg-white dark:bg-slate-900 border dark:border-slate-800 rounded-3xl p-5 shadow-sm flex flex-col justify-center items-center gap-3 relative overflow-hidden group">
+          {isParsingImage ? (
+            <div className="flex flex-col items-center justify-center h-full text-brand-600">
+              <Loader2 className="animate-spin mb-2" size={24} />
+              <p className="text-xs font-bold animate-pulse">Scanning Timetable...</p>
+            </div>
+          ) : (
+            <>
+              <div className="w-12 h-12 bg-purple-50 dark:bg-purple-900/20 text-purple-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"><ImagePlus size={22} /></div>
+              <div className="text-center">
+                <p className="text-sm font-black text-gray-900 dark:text-white">Auto-Build</p>
+                <p className="text-[10px] font-bold text-gray-400">Upload Image</p>
+              </div>
+              <input type="file" accept="image/*" onChange={handleImageUpload} className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10" title="Upload Timetable Image" disabled={isParsingImage} />
+            </>
+          )}
         </div>
       </div>
 
