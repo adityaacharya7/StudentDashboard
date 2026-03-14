@@ -151,3 +151,71 @@ export interface ATSAnalysis {
   };
   recruiter_reality_check: string; // Blunt assessment
 }
+
+// ── Quiz Maker ──
+export interface QuizQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correct: number;
+  explanation: string;
+}
+
+export interface QuizSession {
+  id: string;
+  topic: string;
+  difficulty: string;
+  questions: QuizQuestion[];
+  score: number;
+  total: number;
+  createdAt: string;
+}
+
+// ── Performance Analyzer ──
+export interface SubjectScore {
+  subject: string;
+  score: number;
+  maxScore: number;
+  grade: string;
+}
+
+export interface PerformanceReport {
+  id: string;
+  examName: string;
+  subjects: SubjectScore[];
+  overallPercent: number;
+  strengths: string[];
+  weaknesses: string[];
+  improvementPlan: string[];
+  createdAt: string;
+}
+
+// ── Notes Summarizer ──
+export interface SavedNote {
+  id: string;
+  title: string;
+  subject: string;
+  rawText: string;
+  summary: string;
+  keyPoints: string[];
+  importantTerms: string[];
+  likelyQuestions: string[];
+  createdAt: string;
+}
+
+// ── Transcript Generator ──
+export interface TranscriptSection {
+  heading: string;
+  content: string;
+  keyConcepts: string[];
+}
+
+export interface SavedTranscript {
+  id: string;
+  title: string;
+  subject: string;
+  tldr: string;
+  sections: TranscriptSection[];
+  actionItems: string[];
+  createdAt: string;
+}

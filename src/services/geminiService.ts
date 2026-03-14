@@ -1,6 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { RoadmapData, PrepPlan, UserProfile, ATSAnalysis, ChatMessage } from "../../types";
+import { RoadmapData, PrepPlan, UserProfile, ATSAnalysis, ChatMessage, QuizQuestion, SubjectScore } from "../../types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
@@ -110,7 +110,7 @@ export const getCareerAdvice = async (history: { role: string; content: string }
   const chat = ai.chats.create({
     model: 'gemini-3-flash-preview',
     config: {
-      systemInstruction: `You are PathPilot AI, a personalized career advisor. Help the student with placement strategies.`,
+      systemInstruction: `You are Synapse AI, a personalized career advisor. Help the student with placement strategies.`,
     }
   });
   const lastMessage = history[history.length - 1].content;
@@ -399,4 +399,178 @@ export const chatWithResume = async (
 
   const result = await chat.sendMessage({ message: currentMessage });
   return result.text || "I couldn't process that request.";
+};
+
+// ── Quiz Maker ──
+export const generateQuiz = async (
+  topic: string,
+  noteText: string = '',
+  difficulty: string = 'Medium',
+  count: number = 10
+): Promise<QuizQuestion[]> => {
+  const contextPart = noteText
+    ? `\n\nThe student has provided the following notes as context — base your questions on this material:\n${noteText.substring(0, 8000)}`
+    : '';
+
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: `You are an expert quiz generator. Generate exactly ${count} multiple-choice questions about "${topic}" at ${difficulty} difficulty level.${contextPart}
+
+    Each question MUST have exactly 4 options. The "correct" field is the 0-based index of the correct option.
+    The "explanation" field should explain WHY the correct answer is right in 1-2 sentences.`,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.ARRAY,
+        items: {
+          type: Type.OBJECT,
+          properties: {
+            id: { type: Type.STRING },
+            question: { type: Type.STRING },
+            options: { type: Type.ARRAY, items: { type: Type.STRING } },
+            correct: { type: Type.NUMBER },
+            explanation: { type: Type.STRING }
+          },
+          required: ["id", "question", "options", "correct", "explanation"]
+        }
+      }
+    }
+  });
+  return JSON.parse(response.text || '[]');
+};
+
+// ── Performance Analyzer ──
+export const analyzeStudentPerformance = async (
+  subjects: SubjectScore[],
+  examName: string,
+  targetRole: string = '',
+  currentLevel: string = 'Beginner'
+): Promise<{
+  strengths: string[];
+  weaknesses: string[];
+  improvementPlan: string[];
+}> => {
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: `You are an expert academic counselor. Analyze the following exam results for a student${targetRole ? ` targeting a career as a ${targetRole}` : ''} (level: ${currentLevel}).
+
+    Exam: ${examName}
+    Subjects: ${JSON.stringify(subjects)}
+
+    Provide:
+    1. strengths: 3-5 specific strengths based on high-scoring subjects
+    2. weaknesses: 3-5 specific weaknesses based on low-scoring subjects
+    3. improvementPlan: 5-8 ACTIONABLE, SPECIFIC steps to improve weak areas (not generic advice)`,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          strengths: { type: Type.ARRAY, items: { type: Type.STRING } },
+          weaknesses: { type: Type.ARRAY, items: { type: Type.STRING } },
+          improvementPlan: { type: Type.ARRAY, items: { type: Type.STRING } }
+        },
+        required: ["strengths", "weaknesses", "improvementPlan"]
+      }
+    }
+  });
+  return JSON.parse(response.text || '{}');
+};
+
+// ── Notes Summarizer ──
+export const summarizeNotes = async (
+  rawText: string,
+  subject: string = 'General'
+): Promise<{
+  summary: string;
+  keyPoints: string[];
+  importantTerms: string[];
+  likelyQuestions: string[];
+}> => {
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: `You are an expert study assistant. Analyze the following ${subject} notes and produce a comprehensive study guide.
+
+    NOTES:
+    ${rawText.substring(0, 15000)}
+
+    Provide:
+    1. summary: A clear, well-structured summary (3-5 paragraphs)
+    2. keyPoints: 5-10 critical takeaways
+    3. importantTerms: 5-15 key terms/definitions a student must know
+    4. likelyQuestions: 5-8 questions likely to appear in an exam on this material`,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          summary: { type: Type.STRING },
+          keyPoints: { type: Type.ARRAY, items: { type: Type.STRING } },
+          importantTerms: { type: Type.ARRAY, items: { type: Type.STRING } },
+          likelyQuestions: { type: Type.ARRAY, items: { type: Type.STRING } }
+        },
+        required: ["summary", "keyPoints", "importantTerms", "likelyQuestions"]
+      }
+    }
+  });
+  return JSON.parse(response.text || '{}');
+};
+
+// ── Transcript Generator ──
+export const generateTranscript = async (
+  rawText: string,
+  subject: string = 'General',
+  fileData?: { data: string; mimeType: string }
+): Promise<{
+  tldr: string;
+  sections: { heading: string; content: string; keyConcepts: string[] }[];
+  actionItems: string[];
+}> => {
+  const systemPrompt = `You are an expert lecture organizer. Structure the following ${subject} lecture content into a clean, organized transcript.
+
+  Provide:
+  1. tldr: A 2-3 sentence summary of the entire lecture
+  2. sections: Break the content into logical sections, each with a heading, the cleaned-up content, and key concepts highlighted
+  3. actionItems: 3-5 action items the student should follow up on after this lecture`;
+
+  let requestContents: any;
+  if (fileData) {
+    requestContents = {
+      parts: [
+        { inlineData: { mimeType: fileData.mimeType, data: fileData.data } },
+        { text: systemPrompt }
+      ]
+    };
+  } else {
+    requestContents = `${systemPrompt}\n\nLECTURE TEXT:\n${rawText.substring(0, 15000)}`;
+  }
+
+  const response = await ai.models.generateContent({
+    model: "gemini-3-flash-preview",
+    contents: requestContents,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.OBJECT,
+        properties: {
+          tldr: { type: Type.STRING },
+          sections: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                heading: { type: Type.STRING },
+                content: { type: Type.STRING },
+                keyConcepts: { type: Type.ARRAY, items: { type: Type.STRING } }
+              },
+              required: ["heading", "content", "keyConcepts"]
+            }
+          },
+          actionItems: { type: Type.ARRAY, items: { type: Type.STRING } }
+        },
+        required: ["tldr", "sections", "actionItems"]
+      }
+    }
+  });
+  return JSON.parse(response.text || '{}');
 };

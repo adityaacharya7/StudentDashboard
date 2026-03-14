@@ -54,7 +54,7 @@ const ProfileSetup: React.FC = () => {
             <div className="space-y-8 relative z-10">
               <div className="space-y-3">
                 <h2 className="text-3xl font-black dark:text-white tracking-tight">Define your dream.</h2>
-                <p className="text-gray-500 dark:text-gray-400 font-medium">Which career path should PathPilot optimize for you?</p>
+                <p className="text-gray-500 dark:text-gray-400 font-medium">Which career path should Synapse optimize for you?</p>
               </div>
               
               <div className="relative group">
@@ -206,7 +206,7 @@ const ProfileSetup: React.FC = () => {
         </div>
         
         <p className="text-center mt-8 text-[10px] font-black text-gray-400 uppercase tracking-[0.3em]">
-           PathPilot Engine v1.0.4-MVP
+           Synapse Engine v2.0
         </p>
       </div>
     </div>

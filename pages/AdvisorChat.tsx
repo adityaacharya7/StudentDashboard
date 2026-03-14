@@ -55,7 +55,7 @@ const AdvisorChat: React.FC = () => {
             <Bot size={28} />
           </div>
           <div>
-            <h1 className="font-bold text-xl dark:text-white">PathPilot Advisor</h1>
+            <h1 className="font-bold text-xl dark:text-white">Synapse Advisor</h1>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
               <span className="text-xs text-green-500 font-bold uppercase tracking-widest">Optimizing your path</span>

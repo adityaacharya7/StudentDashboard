@@ -1,10 +1,10 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation, useNavigate, Navigate } from 'react-router-dom';
-import { Layout, Briefcase, MessageSquare, Map, FileText, Settings, BarChart, Sun, Moon, LogOut, User as UserIcon, Sparkles } from 'lucide-react';
+import { Layout, Briefcase, MessageSquare, Map, FileText, Settings, BarChart, Sun, Moon, LogOut, User as UserIcon, Sparkles, Brain, TrendingUp, BookOpen, AudioLines } from 'lucide-react';
 import { UserProfile } from './types';
 import { auth, googleProvider, getUserProfile, saveUserProfile } from './src/services/firebase';
-import { onAuthStateChanged, signInWithRedirect, getRedirectResult, signOut } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth';
 import { isAdmin } from './src/config/adminEmails';
 
 // Pages
@@ -18,6 +18,10 @@ import Roadmap from './pages/Roadmap';
 import ResumeBuilder from './pages/ResumeBuilder';
 import AdminPanel from './pages/AdminPanel';
 import ProfileSetup from './pages/ProfileSetup';
+import QuizMaker from './pages/QuizMaker';
+import PerformanceAnalyzer from './pages/PerformanceAnalyzer';
+import NotesManager from './pages/NotesManager';
+import TranscriptGenerator from './pages/TranscriptGenerator';
 
 // Contexts
 const ThemeContext = createContext({ isDark: false, toggle: () => { } });
@@ -51,6 +55,10 @@ const Sidebar = () => {
     { path: '/roadmap', icon: Map, label: 'Skill Roadmap' },
 
     { path: '/resume', icon: FileText, label: 'Resume Builder' },
+    { path: '/quiz', icon: Brain, label: 'Quiz Maker' },
+    { path: '/performance', icon: TrendingUp, label: 'Performance' },
+    { path: '/notes', icon: BookOpen, label: 'Notes' },
+    { path: '/transcript', icon: AudioLines, label: 'Transcripts' },
   ];
 
   if (user && isAdmin(user.email)) {
@@ -63,8 +71,8 @@ const Sidebar = () => {
     <div className="w-72 bg-white dark:bg-slate-900 border-r dark:border-slate-800 h-screen sticky top-0 flex flex-col transition-all duration-300">
       <div className="p-8 border-b dark:border-slate-800">
         <Link to="/dashboard" className="text-2xl font-black text-brand-600 dark:text-brand-400 flex items-center gap-3 tracking-tighter">
-          <div className="w-10 h-10 bg-brand-600 rounded-2xl flex items-center justify-center text-white text-base shadow-lg shadow-brand-500/20">PP</div>
-          PathPilot
+          <div className="w-10 h-10 bg-brand-600 rounded-2xl flex items-center justify-center text-white text-base shadow-lg shadow-brand-500/20">SY</div>
+          Synapse
         </Link>
       </div>
 
@@ -155,11 +163,6 @@ const App: React.FC = () => {
   }, [isDark]);
 
   useEffect(() => {
-    // Handle redirect result from Google Sign-In
-    getRedirectResult(auth).catch((e) => {
-      console.error("Redirect sign-in failed", e);
-    });
-
     // Listen for auth state changes
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
@@ -193,7 +196,7 @@ const App: React.FC = () => {
     }
 
     try {
-      await signInWithRedirect(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider);
     } catch (e) {
       console.error("Login failed", e);
     }
@@ -228,6 +231,10 @@ const App: React.FC = () => {
                 <Route path="/planner" element={<ProtectedRoute><PrepPlanner /></ProtectedRoute>} />
                 <Route path="/roadmap" element={<ProtectedRoute><Roadmap /></ProtectedRoute>} />
                 <Route path="/resume" element={<ProtectedRoute><ResumeBuilder /></ProtectedRoute>} />
+                <Route path="/quiz" element={<ProtectedRoute><QuizMaker /></ProtectedRoute>} />
+                <Route path="/performance" element={<ProtectedRoute><PerformanceAnalyzer /></ProtectedRoute>} />
+                <Route path="/notes" element={<ProtectedRoute><NotesManager /></ProtectedRoute>} />
+                <Route path="/transcript" element={<ProtectedRoute><TranscriptGenerator /></ProtectedRoute>} />
                 <Route path="/admin" element={<AdminRoute><AdminPanel /></AdminRoute>} />
               </Routes>
             </main>

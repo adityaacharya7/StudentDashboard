@@ -127,13 +127,13 @@ const Login: React.FC = () => {
 
         <div className="relative inline-block">
           <div className="w-24 h-24 bg-brand-600 rounded-[2rem] flex items-center justify-center text-white text-4xl font-black shadow-2xl shadow-brand-500/40 relative z-10">
-            PP
+            SY
           </div>
           <div className="absolute -inset-4 bg-brand-500 rounded-[2.5rem] blur-2xl opacity-20 animate-pulse"></div>
         </div>
 
         <div className="space-y-3">
-          <h1 className="text-4xl font-black dark:text-white tracking-tighter sm:text-5xl">PathPilot AI</h1>
+          <h1 className="text-4xl font-black dark:text-white tracking-tighter sm:text-5xl">Synapse</h1>
           <p className="text-gray-500 dark:text-gray-400 font-medium text-lg leading-tight">
             The intelligent engine for your career takeoff.
           </p>

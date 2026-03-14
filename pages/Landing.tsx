@@ -18,7 +18,7 @@ const Landing: React.FC = () => {
               <Rocket size={20} className="fill-white/20" />
             </div>
             <span className="text-xl font-bold text-gray-900 dark:text-white tracking-tight group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
-              PathPilot<span className="text-brand-600 dark:text-brand-400">.ai</span>
+              Synapse
             </span>
           </Link>
 
@@ -68,7 +68,7 @@ const Landing: React.FC = () => {
             friction={0.8}
             wallBounce={0.8}
             followCursor={true}
-            colors={[0x3B82F6, 0x000000, 0xFFFFFF]}
+            colors={[0x8B5CF6, 0x06B6D4, 0xF0ABFC]}
           />
         </div>
         <div className="absolute inset-0 bg-white/40 dark:bg-slate-950/80 backdrop-blur-[1px] pointer-events-none z-0"></div>
@@ -83,7 +83,7 @@ const Landing: React.FC = () => {
           {/* Headline */}
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black text-gray-900 dark:text-white mb-6 tracking-tight leading-[0.95] mx-auto max-w-5xl">
             From Student to <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-br from-brand-600 via-brand-500 to-indigo-600 dark:from-brand-400 dark:via-brand-300 dark:to-indigo-400 relative">
+            <span className="text-transparent bg-clip-text bg-gradient-to-br from-violet-500 via-purple-500 to-cyan-400 dark:from-violet-400 dark:via-purple-400 dark:to-cyan-300 relative">
               Specialist.
               {/* Underline decoration */}
               <svg className="absolute w-full h-3 -bottom-1 left-0 text-brand-300 dark:text-brand-700 opacity-50 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
@@ -99,7 +99,7 @@ const Landing: React.FC = () => {
 
           {/* Description */}
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            PathPilot cuts through the noise. We use advanced AI to generate personalized roadmaps, rewrite your resume for ATS, and uncover internships that actually match your skills.
+            Synapse cuts through the noise. We use advanced AI to generate personalized roadmaps, rewrite your resume for ATS, and uncover internships that actually match your skills.
           </p>
 
           {/* CTAs */}
@@ -130,7 +130,7 @@ const Landing: React.FC = () => {
               <h2 className="text-4xl font-black dark:text-white flex items-center gap-4">
                 The Career Gap
               </h2>
-              <p className="text-gray-500 text-lg">Most students feel lost in the transition between academia and industry. PathPilot bridges that gap.</p>
+              <p className="text-gray-500 text-lg">Most students feel lost in the transition between academia and industry. Synapse bridges that gap.</p>
               <div className="grid gap-4">
                 {[
                   { icon: <XCircle className="text-red-500" />, text: "Skills disconnect with job markets" },
@@ -148,7 +148,7 @@ const Landing: React.FC = () => {
               <div className="absolute -inset-4 bg-brand-500 rounded-3xl opacity-20 blur-2xl group-hover:opacity-30 transition-opacity"></div>
               <div className="relative bg-white dark:bg-slate-900 p-8 rounded-3xl border dark:border-slate-800 shadow-2xl">
                 <h3 className="text-2xl font-black mb-8 dark:text-white flex items-center gap-3">
-                  <Shield className="text-brand-600" /> PathPilot Solution
+                  <Shield className="text-brand-600" /> Synapse Solution
                 </h3>
                 <div className="space-y-6">
                   <div className="p-4 bg-brand-50 dark:bg-brand-900/20 rounded-xl border border-brand-100 dark:border-brand-900/30">
@@ -174,9 +174,9 @@ const Landing: React.FC = () => {
       <footer className="py-20 border-t dark:border-slate-800 bg-white dark:bg-slate-950">
         <div className="container mx-auto px-6 text-center">
           <div className="flex justify-center mb-8">
-            <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white font-bold">PP</div>
+            <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white font-bold">SY</div>
           </div>
-          <p className="text-gray-500 dark:text-gray-400 font-medium">© 2024 PathPilot AI. Forging the next generation of industry leaders.</p>
+          <p className="text-gray-500 dark:text-gray-400 font-medium">© 2026 Synapse. Forging the next generation of industry leaders.</p>
         </div>
       </footer>
     </div>
