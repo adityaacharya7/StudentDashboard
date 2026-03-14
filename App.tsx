@@ -77,12 +77,12 @@ const Sidebar = () => {
     <div className="w-72 bg-white dark:bg-slate-900 border-r dark:border-slate-800 h-screen sticky top-0 flex flex-col transition-all duration-300">
       <div className="p-8 border-b dark:border-slate-800">
         <Link to="/dashboard" className="text-2xl font-black text-brand-600 dark:text-brand-400 flex items-center gap-3 tracking-tighter">
-          <div className="w-10 h-10 bg-brand-600 rounded-2xl flex items-center justify-center text-white text-base shadow-lg shadow-brand-500/20">SY</div>
+          <img src="/logo.png" alt="Synapse Logo" className="w-8 h-8 object-contain" />
           Synapse
         </Link>
       </div>
 
-      <nav className="flex-1 p-6 space-y-2 overflow-y-auto">
+      <nav className="flex-1 p-6 space-y-2 overflow-y-auto custom-scrollbar">
         <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-4 ml-4">Main Menu</p>
         {navItems.map((item) => (
           <Link

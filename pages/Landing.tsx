@@ -14,9 +14,7 @@ const Landing: React.FC = () => {
         <div className="container mx-auto px-6 h-20 flex items-center justify-between">
           {/* Logo & Brand */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-500/30 group-hover:scale-105 transition-transform duration-300">
-              <Rocket size={20} className="fill-white/20" />
-            </div>
+            <img src="/logo.png" alt="Synapse Logo" className="w-10 h-10 object-contain group-hover:scale-105 transition-transform duration-300" />
             <span className="text-xl font-bold text-gray-900 dark:text-white tracking-tight group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors">
               Synapse
             </span>
@@ -174,7 +172,7 @@ const Landing: React.FC = () => {
       <footer className="py-20 border-t dark:border-slate-800 bg-white dark:bg-slate-950">
         <div className="container mx-auto px-6 text-center">
           <div className="flex justify-center mb-8">
-            <div className="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white font-bold">SY</div>
+            <img src="/logo.png" alt="Synapse Logo" className="w-10 h-10 object-contain" />
           </div>
           <p className="text-gray-500 dark:text-gray-400 font-medium">&copy; 2026 Synapse. Empowering students to study smarter, not harder.</p>
         </div>

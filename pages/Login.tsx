@@ -126,9 +126,7 @@ const Login: React.FC = () => {
       <div className="max-w-md w-full text-center space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-700">
 
         <div className="relative inline-block">
-          <div className="w-24 h-24 bg-brand-600 rounded-[2rem] flex items-center justify-center text-white text-4xl font-black shadow-2xl shadow-brand-500/40 relative z-10">
-            SY
-          </div>
+          <img src="/logo.png" alt="Synapse Logo" className="w-24 h-24 object-contain shadow-2xl shadow-brand-500/40 relative z-10 rounded-[2rem]" />
           <div className="absolute -inset-4 bg-brand-500 rounded-[2.5rem] blur-2xl opacity-20 animate-pulse"></div>
         </div>
 
@@ -170,8 +168,8 @@ const Login: React.FC = () => {
                 onClick={() => handleCredentialResponse({ credential: null })}
                 className="group w-full flex items-center justify-center gap-3 py-4 px-6 bg-brand-600 text-white rounded-2xl font-bold hover:bg-brand-700 transition-all shadow-lg shadow-brand-500/20 hover:-translate-y-0.5 active:scale-95"
               >
-                <Terminal size={18} className="group-hover:rotate-12 transition-transform" />
-                Continue as Developer
+                <UserIcon size={18} className="group-hover:scale-110 transition-transform" />
+                Continue as Guest
               </button>
             </div>
 
@@ -181,7 +179,7 @@ const Login: React.FC = () => {
                 <span className="text-xs font-black uppercase tracking-widest">Auth Note</span>
               </div>
               <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">
-                Real Google Login requires a domain-verified Client ID. For this MVP, use the <b>Developer Access</b> to test all features immediately.
+                Real Google Login requires a domain-verified Client ID. For this MVP, use the <b>Guest Access</b> to test all features immediately.
               </p>
             </div>
           </div>
